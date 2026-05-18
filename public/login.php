@@ -33,37 +33,48 @@ if (isset($_POST['who']) && isset($_POST['pass'])) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Ethan Haruvy</title>
-    <style>
-        body  { font-family: Arial, sans-serif; margin: 40px; }
-        .error { color: red; margin-bottom: 10px; }
-        label { display: inline-block; width: 80px; }
-        input[type=text], input[type=password] { width: 200px; padding: 4px; }
-        input[type=submit] { margin-top: 10px; padding: 6px 16px; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutomobileTracker Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-FY1bJKl+Z6Bml6BnZbBpqjNi9HZxiQWGOe+F2dMZtqBGaH3Juu8FwwUK4Eb7y4x0" crossorigin="anonymous">
 </head>
-<body>
-<h1>Please Log In</h1>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="h4 mb-3">Sign in</h1>
+                    <p class="text-muted">Use your email and password to access the automobile tracker.</p>
 
-<?php if (strlen($error) > 0): ?>
-    <p class="error"><?= htmlentities($error) ?></p>
-<?php endif; ?>
+                    <?php if (strlen($error) > 0): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?= htmlentities($error) ?>
+                        </div>
+                    <?php endif; ?>
 
-<form method="post">
-    <p>
-        <label for="who">Email:</label>
-        <input type="text" name="who" id="who"
-               value="<?= isset($_POST['who']) ? htmlentities($_POST['who']) : '' ?>">
-    </p>
-    <p>
-        <label for="pass">Password:</label>
-        <input type="password" name="pass" id="pass">
-    </p>
-    <p>
-        <input type="submit" value="Log In">
-    </p>
-</form>
+                    <form method="post" class="mb-3">
+                        <div class="mb-3">
+                            <label for="who" class="form-label">Email</label>
+                            <input type="text" name="who" id="who" class="form-control" value="<?= isset($_POST['who']) ? htmlentities($_POST['who']) : '' ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pass" class="form-label">Password</label>
+                            <input type="password" name="pass" id="pass" class="form-control">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Log In</button>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <a href="index.php" class="link-secondary">Back to home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

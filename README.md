@@ -1,67 +1,81 @@
-# AutomobileTracker
-Web app to track automobiles and store data in a MySQL database.
-
-Repository layout:
-
-	- `index.php`, `login.php`, `autos.php`
-	- `pdo.php`
-	- `init_db.sql`
-
-Quick start (MAMP / local):
-
-1. Import the database: `mysql -u root -p < sql/init_db.sql` (or use phpMyAdmin)
-2. Configure MySQL credentials in `src/pdo.php` (replace `fred` / `zap`).
-3. Point your web server document root to the `public/` directory.
 # 🚗 AutomobileTracker
 
 A secure, database-driven web application built with PHP and MySQL to track and manage automobile inventories.
 
 ## 🌟 Key Features
 
-- **User Authentication:** Secure login gateway requiring properly formatted credentials and basic input validation.
-- **Data Validation:** Robust server-side verification ensuring data integrity (e.g., numeric constraints on mileage/year, mandatory fields).
-- **XSS Mitigation:** Defensive use of `htmlentities()` to prevent Cross-Site Scripting vulnerabilities.
-- **Production-Ready Architecture:** Clear separation between web-accessible files (`public/`) and backend code (`src/`).
-- **Dynamic Configuration:** Uses environment variables (and optional `.env` support) for database credentials to avoid hardcoded secrets.
+- **User Authentication:** Login gateway with email formatting checks and server-side validation.
+- **Data Validation:** Enforces numeric year/mileage values and required `make` input before inserting records.
+- **XSS Mitigation:** Uses `htmlentities()` for output sanitization to reduce Cross-Site Scripting risks.
+- **Production-Ready Architecture:** Keeps web-facing files in `public/` while isolating backend logic in `src/`.
+- **Dynamic Configuration:** Reads database credentials from environment variables, avoiding hardcoded secrets.
 
 ## 📁 Repository Architecture
 
-- `public/`: Web-facing PHP documents (Document Root).
-  - `index.php` - Application landing page.
-  - `login.php` - Authentication handler and interface.
-  - `autos.php` - Main application dashboard.
-- `src/`: Core application logic and internal helper scripts (non-public).
-  - `pdo.php` - Dynamic database connection abstraction layer (uses environment variables).
-- `sql/`: Database schema initialization and migration control.
-  - `init_db.sql` - Table definitions and structures.
+- `public/`: Web-facing PHP files, intended for the document root.
+  - `index.php` - Landing page.
+  - `login.php` - Login form and authentication.
+  - `autos.php` - Main automobile management dashboard.
+- `src/`: Backend helper code and database connection logic.
+  - `pdo.php` - Database connection loader using environment variables.
+- `sql/`: Database initialization scripts.
+  - `init_db.sql` - Creates the `misc` database and `autos` table.
+- `.env.example`: Example environment variables for local development.
 
 ## 🛠️ Tech Stack
 
-- **Backend:** PHP 8.x
+- **Backend:** PHP 8.3.1
 - **Database:** MySQL
-- **Environment Management:** native environment variables
+- **Configuration:** Environment variables
 
 ## 🚀 Local Installation & Setup
 
 1. **Clone the repository:**
-	```bash
-	git clone https://github.com/yourusername/AutomobileTracker.git
-	cd AutomobileTracker
-	```
+   ```bash
+   git clone https://github.com/yourusername/AutomobileTracker.git
+   cd AutomobileTracker
+   ```
 
-2. **Initialize the Database:**
-	Import the schema into your local MySQL instance (MAMP/XAMPP):
-	```bash
-	mysql -u root -p < sql/init_db.sql
-	```
+2. **Initialize the database:**
+   ```bash
+   mysql -u root -p < sql/init_db.sql
+   ```
 
-3. **Configure Environment Variables:**
-	Copy the example file and populate it:
-	```bash
-	cp .env.example .env
-	```
-	Or set the variables in your OS or hosting platform.
+3. **Create local environment settings:**
+   ```bash
+   cp .env.example .env
+   ```
+   Or on Windows PowerShell:
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+   Then update `.env` with your local MySQL values.
 
-4. **Web Server Configuration:**
-	Point your web server document root to the `public/` directory.
+4. **Configure your local web server:**
+   - Set the document root to the `public/` directory.
+   - If using MAMP or XAMPP on Windows, point the host folder to `.../AutomobileTracker/public`.
+
+5. **Open the application in your browser:**
+   ```text
+   http://localhost/AutomobileTracker/public/
+   ```
+
+## 🔑 Local Development Credentials
+
+The placeholder defaults in `.env.example` are for local development only:
+
+- `DB_HOST=localhost`
+- `DB_PORT=3306`
+- `DB_NAME=misc`
+- `DB_USER=fred`
+- `DB_PASSWORD=zap`
+
+> Do not use `fred` / `zap` in production. Those are placeholder values only.
+
+## 🚨 Deployment Checklist
+
+- Do not commit or upload `.env` to production.
+- Use your host's environment configuration dashboard to set `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD`.
+- Generate a secure password for the production database user.
+- Set your web server document root to the `public/` folder so `src/` and `sql/` are not exposed.
 

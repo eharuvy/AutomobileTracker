@@ -61,89 +61,98 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Ethan Haruvy</title>
-    <style>
-        body  { font-family: Arial, sans-serif; margin: 40px; }
-        .error   { color: red;   margin-bottom: 10px; }
-        .success { color: green; margin-bottom: 10px; }
-        label { display: inline-block; width: 80px; }
-        input[type=text] { width: 180px; padding: 4px; }
-        table { border-collapse: collapse; margin-top: 20px; width: 70%; }
-        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .btn-logout { margin-left: 10px; padding: 6px 14px; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutomobileTracker Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-FY1bJKl+Z6Bml6BnZbBpqjNi9HZxiQWGOe+F2dMZtqBGaH3Juu8FwwUK4Eb7y4x0" crossorigin="anonymous">
 </head>
-
-<body>
-
-<h1>Autos</h1>
-<p>Hello, <?= htmlentities($name) ?></p>
-
-<!-- Keep name in URL -->
-<form method="post" action="autos.php?name=<?= urlencode($name) ?>">
+<body class="bg-light">
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0">Automobile Inventory</h1>
+            <p class="text-muted mb-0">Hello, <?= htmlentities($name) ?></p>
+        </div>
+        <form method="post" action="autos.php?name=<?= urlencode($name) ?>">
+            <button type="submit" name="logout" class="btn btn-outline-secondary">Logout</button>
+        </form>
+    </div>
 
     <?php if (strlen($error) > 0): ?>
-        <p class="error"><?= htmlentities($error) ?></p>
+        <div class="alert alert-danger" role="alert">
+            <?= htmlentities($error) ?>
+        </div>
     <?php endif; ?>
 
     <?php if (strlen($success) > 0): ?>
-        <p class="success"><?= htmlentities($success) ?></p>
+        <div class="alert alert-success" role="alert">
+            <?= htmlentities($success) ?>
+        </div>
     <?php endif; ?>
 
-    <p>
-        <label for="make">Make:</label>
-        <input type="text" name="make" id="make"
-               value="<?= isset($_POST['make']) && strlen($error) > 0 ? htmlentities($_POST['make']) : '' ?>">
-    </p>
-
-    <p>
-        <label for="year">Year:</label>
-        <input type="text" name="year" id="year"
-               value="<?= isset($_POST['year']) && strlen($error) > 0 ? htmlentities($_POST['year']) : '' ?>">
-    </p>
-
-    <p>
-        <label for="mileage">Mileage:</label>
-        <input type="text" name="mileage" id="mileage"
-               value="<?= isset($_POST['mileage']) && strlen($error) > 0 ? htmlentities($_POST['mileage']) : '' ?>">
-    </p>
-
-    <p>
-        <input type="submit" name="add" value="Add">
-        <input type="submit" name="logout" value="Logout" class="btn-logout">
-    </p>
-</form>
-
-<!-- Autos Table -->
-<?php if (count($rows) > 0): ?>
-<table>
-    <tr>
-        <th>Make</th>
-        <th>Year</th>
-        <th>Mileage</th>
-        <th>Action</th>
-    </tr>
-
-    <?php foreach ($rows as $row): ?>
-    <tr>
-        <td><?= htmlentities($row['make']) ?></td>
-        <td><?= htmlentities($row['year']) ?></td>
-        <td><?= htmlentities($row['mileage']) ?></td>
-
-        <td>
-            <form method="post" style="display:inline;">
-                <input type="hidden" name="auto_id" value="<?= $row['auto_id'] ?>">
-                <input type="submit" name="delete" value="Delete"
-                       onclick="return confirm('Delete this record?');">
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h2 class="h5">Add a new automobile</h2>
+            <form method="post" action="autos.php?name=<?= urlencode($name) ?>">
+                <div class="row gy-3">
+                    <div class="col-md-4">
+                        <label for="make" class="form-label">Make</label>
+                        <input type="text" class="form-control" id="make" name="make" value="<?= isset($_POST['make']) && strlen($error) > 0 ? htmlentities($_POST['make']) : '' ?>">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="year" class="form-label">Year</label>
+                        <input type="text" class="form-control" id="year" name="year" value="<?= isset($_POST['year']) && strlen($error) > 0 ? htmlentities($_POST['year']) : '' ?>">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="mileage" class="form-label">Mileage</label>
+                        <input type="text" class="form-control" id="mileage" name="mileage" value="<?= isset($_POST['mileage']) && strlen($error) > 0 ? htmlentities($_POST['mileage']) : '' ?>">
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" name="add" class="btn btn-primary">Add Automobile</button>
+                </div>
             </form>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-</table>
-<?php endif; ?>
+        </div>
+    </div>
 
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="h5 mb-3">Registered Automobiles</h2>
+            <?php if (count($rows) > 0): ?>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Make</th>
+                                <th>Year</th>
+                                <th>Mileage</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($rows as $row): ?>
+                                <tr>
+                                    <td><?= htmlentities($row['make']) ?></td>
+                                    <td><?= htmlentities($row['year']) ?></td>
+                                    <td><?= htmlentities($row['mileage']) ?></td>
+                                    <td class="text-end">
+                                        <form method="post" class="d-inline" onsubmit="return confirm('Delete this record?');">
+                                            <input type="hidden" name="auto_id" value="<?= $row['auto_id'] ?>">
+                                            <button type="submit" name="delete" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <p class="text-muted mb-0">No automobiles have been added yet.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
 </body>
 </html>
