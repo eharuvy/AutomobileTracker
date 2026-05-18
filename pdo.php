@@ -1,4 +1,0 @@
-<?php
-// MAMP on Windows - change 'fred' and 'zap' to your MySQL username and password
-$pdo = new PDO('mysql:host=localhost;port=3306;dbname=misc', 'fred', 'zap');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

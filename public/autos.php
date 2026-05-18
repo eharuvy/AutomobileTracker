@@ -15,7 +15,7 @@ if (isset($_POST['logout'])) {
 }
 
 // Connect to the database
-require_once 'pdo.php';
+require_once __DIR__ . '/../src/pdo.php';
 
 $error   = '';
 $success = '';
